@@ -4,7 +4,7 @@ from flask import render_template, request, jsonify
 ### EXO1 - simple API
 @app.route('/api/simple')
 def simple_api():
-    return jsonify({"message": "Hello"})
+    return jsonify({"message": "Hello World"})
 
 ### EXO2 - API with simple display
 @app.route('/simple-display')
