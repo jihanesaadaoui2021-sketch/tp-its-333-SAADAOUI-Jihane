@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Données de Santé</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding-top: 50px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+        h1 { color: #2c3e50; }
+        .data { font-size: 24px; color: #e74c3c; font-weight: bold; margin: 10px 0; }
+        .label { color: #7f8c8d; text-transform: uppercase; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>{{ nom|capitalize }}</h1>
+        <p class="label">Résultat pour : {{ type_donnee }}</p>
+        <p class="data">{{ valeur }}</p>
+        <p><a href="/">Retour à l'accueil</a></p>
+    </div>
+</body>
+</html>
