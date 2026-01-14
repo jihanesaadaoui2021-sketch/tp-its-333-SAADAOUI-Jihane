@@ -1,35 +1,30 @@
 from flask import render_template, request, redirect, url_for, jsonify
 from flask_jwt_extended import create_access_token, jwt_required
-from app import app, db
+from flask_restx import Resource
+from app import app, db, api
 from app.models import Etudiant, Group
 
-# Route pour obtenir un Token JWT
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    # Test simple : admin / admin
-    if username == "admin" and password == "admin":
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token)
-    return jsonify({"msg": "Identifiants incorrects"}), 401
+# Point 2 : Route pour obtenir un Token JWT
+@app.route('/login-api', methods=['POST'])
+def login_api():
+    return jsonify(access_token=create_access_token(identity="admin"))
 
+# Point 3 : Routes déclarées dans Swagger (api.route)
+@api.route('/api/students')
+class StudentList(Resource):
+    def get(self):
+        """Liste des étudiants pour Swagger"""
+        return [{"id": s.id, "nom": s.nom} for s in Etudiant.query.all()]
+
+# Route pour ton interface Web
 @app.route('/')
 def index():
-    tous_les_etudiants = Etudiant.query.all()
-    return render_template('index.html', etudiants=tous_les_etudiants)
+    return render_template('index.html', etudiants=Etudiant.query.all(), groupes=Group.query.all())
 
-# Route protégée par JWT pour l'ajout (côté API)
-@app.route('/api/add', methods=['POST'])
-@jwt_required()
-def api_add_student():
-    data = request.json
-    nouvel_etudiant = Etudiant(
-        nom=data['nom'],
-        adresse=data['adresse'],
-        pincode=data['pincode'],
-        group_id=data['group_id']
-    )
-    db.session.add(nouvel_etudiant)
+@app.route('/add', methods=['POST'])
+def add():
+    new_e = Etudiant(nom=request.form['nom'], adresse=request.form['adresse'], 
+                     pincode=request.form['pincode'], group_id=request.form['group_id'])
+    db.session.add(new_e)
     db.session.commit()
-    return jsonify({"msg": "Étudiant ajouté avec succès via JWT"}), 201
+    return redirect(url_for('index'))

@@ -2,48 +2,66 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Nouvel Étudiant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Étudiant - ITS2</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar { background-color: #1a1a1a; }
+        .card { border-radius: 15px; border: none; }
+        .btn-primary { background-color: #0d6efd; border: none; }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
+<body>
+    <nav class="navbar navbar-dark shadow mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">Gestion de Groupe</a>
+        </div>
+    </nav>
+
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card shadow border-0">
-                    <div class="card-header bg-primary text-white py-3">
-                        <h4 class="mb-0 text-center">Ajouter un Étudiant</h4>
-                    </div>
-                    <div class="card-body p-4">
-                        <form action="/add" method="POST">
-                            <div class="mb-3">
-                                <label class="form-label font-weight-bold">Nom Complet</label>
-                                <input type="text" name="nom" class="form-control" placeholder="Entrez le nom" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label font-weight-bold">Adresse</label>
-                                <input type="text" name="adresse" class="form-control" placeholder="Ex: Paris" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label font-weight-bold">Code PIN</label>
-                                <input type="text" name="pincode" class="form-control" placeholder="Ex: 75000" required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label font-weight-bold">Assigner à un Groupe</label>
-                                <select name="group_id" class="form-select">
-                                    {% for g in groupes %}
-                                    <option value="{{ g.id }}">{{ g.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-success btn-lg">Enregistrer dans SQLite</button>
-                                <a href="/" class="btn btn-outline-secondary">Annuler</a>
-                            </div>
-                        </form>
-                    </div>
+                <div class="card shadow-lg p-4">
+                    <h2 class="text-center mb-4">Nouvel Étudiant</h2>
+                    <hr>
+                    
+                    <form action="/add" method="POST">
+                        <div class="mb-3">
+                            <label for="nom" class="form-label fw-semibold">Nom Complet</label>
+                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Ex: Jihane Saadaoui" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="adresse" class="form-label fw-semibold">Adresse</label>
+                            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Ex: 3 Square De Martorell" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pincode" class="form-label fw-semibold">Pincode (Code Postal)</label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Ex: 94550" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="group_id" class="form-label fw-semibold">Assigner au Groupe</label>
+                            <select class="form-select" id="group_id" name="group_id" required>
+                                {% for g in groupes %}
+                                <option value="{{ g.id }}">{{ g.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">L'étudiant sera lié à la classe choisie (Relation One-to-Many).</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">Enregistrer dans SQLite</button>
+                            <a href="/" class="btn btn-outline-secondary">Annuler et Retour</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
